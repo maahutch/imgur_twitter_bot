@@ -90,7 +90,7 @@ auth.set_access_token(
              keys['twitter'][0]['access_token'],
              keys['twitter'][0]['access_token_secret']
             )
-api = tweepy.API(auth)
+api = tweepy.API(auth, timeout=1000)
 
 #Get Trending Hashtags
 
