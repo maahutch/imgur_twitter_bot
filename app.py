@@ -77,6 +77,7 @@ except NameError:
 
 img_raw = Image.open(urlopen(current_image))
 img = img_raw.convert('RGB')
+img.resize((500,500))
 img.save("current_image.jpg")
 
 
@@ -113,6 +114,8 @@ tweet = tweet2[0:279]
 media = api.media_upload("current_image.jpg")
 
 post_result = api.update_status(status=tweet, media_ids=[media.media_id])
+
+
 
 os.remove("current_image.jpg")
 
