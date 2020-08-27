@@ -95,21 +95,21 @@ api = tweepy.API(auth, timeout=1000)
 
 #Get Trending Hashtags
 
-USA=23424977
-usa_trends = api.trends_place(USA)
-trends = json.loads(json.dumps(usa_trends, indent = 1))
+#USA=23424977
+#usa_trends = api.trends_place(USA)
+#trends = json.loads(json.dumps(usa_trends, indent = 1))
 
 
-trend_tags = []
-for i in trends[0]["trends"]:
-    trend_tags.append(i['name'])
+#trend_tags = []
+#for i in trends[0]["trends"]:
+#    trend_tags.append(i['name'])
 
-#hashtags = ["#"+tag for tag in tags_list]
+hashtags = ["#"+tag for tag in tags_list]
 
-#tweet1 = ' '.join(hashtags)
-tweet2 = ' '.join(trend_tags)
+tweet1 = ' '.join(hashtags)
+#tweet2 = ' '.join(trend_tags)
 #tweet = str(tweet1 + ' ' + tweet2)
-tweet = tweet2[0:279]
+tweet = tweet1[0:279]
 
 media = api.media_upload("current_image.jpg")
 
