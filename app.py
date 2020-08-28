@@ -29,11 +29,11 @@ while True:
         
         shuffle(items)
         
-        tags_list = []
+        #tags_list = []
         
-        keyWords=['politics', 'vote', 'capitalism','trump', 'current events']
+        keyWords=['politics', 'vote', 'capitalism','trump', 'current events', 'republican', 'hatchact', 'election', 'fucktrump']
         
-        keyWords2 = ['funny']
+        keyWords2 = ['funny', 'memes']
         
         index = 0
         
@@ -43,7 +43,9 @@ while True:
         while index < size:
             one_item = items[index].tags
             try:
-                tags_list.append(one_item[0]['name'])
+                tags_list = []
+                for x in range(len(one_item)):
+                    tags_list.append(one_item[x]['name'])
                 for i in tags_list:
                     i.lower
                     if i in keyWords:
@@ -53,16 +55,21 @@ while True:
                         pass
             except:
                 pass
+            else:
+                break
             index += 1
             
         index = 0
+        
         
         try:
             current_image
         except NameError:
             one_item = items[index].tags
             try:
-                tags_list.append(one_item[0]['name'])
+                tags_list = []
+                for x in range(len(one_item)):
+                    tags_list.append(one_item[x]['name'])
                 for i in tags_list:
                     i.lower
                     if i in keyWords2:
@@ -72,8 +79,9 @@ while True:
                         pass
             except:
                 pass
+          
             index += 1
-            
+          
         img_raw = Image.open(urlopen(current_image))
         img = img_raw.convert('RGB')
         img.resize((500,500))
@@ -117,6 +125,8 @@ tweet1 = ' '.join(hashtags)
 #tweet2 = ' '.join(trend_tags)
 #tweet = str(tweet1 + ' ' + tweet2)
 tweet = tweet1[0:279]
+
+
 
 
 media = api.media_upload("current_image.jpg")
