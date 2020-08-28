@@ -17,68 +17,71 @@ from random import shuffle
 with open('twitter_keys.txt') as json_file:
     keys = json.load(json_file)
 
-
-#Imgur
-client_id     = keys['imgur'][0]['client_id']
-client_secret = keys['imgur'][0]['client_secret']
-
-client = ImgurClient(client_id, client_secret)
-
-items=client.gallery(window='hour')
-
-shuffle(items)
-
-tags_list = []
-
-keyWords=['politics', 'vote', 'capitalism','trump', 'current events']
-
-keyWords2 = ['funny']
-
-index = 0
-
-size = len(items)
-
-
-while index < size:
-    one_item = items[index].tags
+while True:
     try:
-        tags_list.append(one_item[0]['name'])
-        for i in tags_list:
-            i.lower
-            if i in keyWords:
-                current_image = items[index].images[0]['link']
-                break
-            else:
+        #Imgur
+        client_id     = keys['imgur'][0]['client_id']
+        client_secret = keys['imgur'][0]['client_secret']
+        
+        client = ImgurClient(client_id, client_secret)
+        
+        items=client.gallery(window='hour')
+        
+        shuffle(items)
+        
+        tags_list = []
+        
+        keyWords=['politics', 'vote', 'capitalism','trump', 'current events']
+        
+        keyWords2 = ['funny']
+        
+        index = 0
+        
+        size = len(items)
+        
+        
+        while index < size:
+            one_item = items[index].tags
+            try:
+                tags_list.append(one_item[0]['name'])
+                for i in tags_list:
+                    i.lower
+                    if i in keyWords:
+                        current_image = items[index].images[0]['link']
+                        break
+                    else:
+                        pass
+            except:
                 pass
-    except:
-        pass
-    index += 1
-    
-index = 0
-
-try:
-    current_image
-except NameError:
-    one_item = items[index].tags
-    try:
-        tags_list.append(one_item[0]['name'])
-        for i in tags_list:
-            i.lower
-            if i in keyWords2:
-                current_image = items[index].images[0]['link']
-                break
-            else:
+            index += 1
+            
+        index = 0
+        
+        try:
+            current_image
+        except NameError:
+            one_item = items[index].tags
+            try:
+                tags_list.append(one_item[0]['name'])
+                for i in tags_list:
+                    i.lower
+                    if i in keyWords2:
+                        current_image = items[index].images[0]['link']
+                        break
+                    else:
+                        pass
+            except:
                 pass
-    except:
+            index += 1
+            
+        img_raw = Image.open(urlopen(current_image))
+        img = img_raw.convert('RGB')
+        img.resize((500,500))
+        img.save("current_image.jpg")
+    except: 
         pass
-    index += 1
-    
-
-
-img_raw = Image.open(urlopen(current_image))
-img = img_raw.convert('RGB')
-img.resize((500,500))
-img.save("current_image.jpg")
+    else:
+        break
 
 
 #Twitter
@@ -104,12 +107,17 @@ api = tweepy.API(auth, timeout=1000)
 #for i in trends[0]["trends"]:
 #    trend_tags.append(i['name'])
 
-hashtags = ["#"+tag for tag in tags_list]
+tags_uni = []
+
+[tags_uni.append(x) for x in tags_list if x not in tags_uni]
+
+hashtags = ["#"+tag for tag in tags_uni]
 
 tweet1 = ' '.join(hashtags)
 #tweet2 = ' '.join(trend_tags)
 #tweet = str(tweet1 + ' ' + tweet2)
 tweet = tweet1[0:279]
+
 
 media = api.media_upload("current_image.jpg")
 
@@ -118,4 +126,3 @@ post_result = api.update_status(status=tweet, media_ids=[media.media_id])
 
 
 os.remove("current_image.jpg")
-
